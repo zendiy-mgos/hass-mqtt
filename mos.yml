@@ -1,0 +1,73 @@
+author: mongoose-os
+description: A JS-enabled demo Mongoose OS firmware
+# arch: PLATFORM
+version: 1.0
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+# build_vars:
+
+# Optional. List of tags for online search.
+tags:
+  - c
+  - js
+  - home assistant
+  - mqtt platform
+
+# List of files / directories with C sources. No slashes at the end of dir names.
+sources:
+# - src-c
+  - src-js
+  
+# List of dirs. Files from these dirs will be copied to the device filesystem
+filesystem:
+  - fs
+
+config_schema:
+  - ["device.id", "ZT??????"]
+  - ["mqtt.enable", true]
+  - ["mqtt.keep_alive", 15]
+  - ["mqtt.will_topic", "$aws/things/${device_id}/availability"]
+  - ["mqtt.will_message", "offline"]
+
+  #  MQTT settings for 'cloudmqtt'
+  #- ["mqtt.server", "m24.cloudmqtt.com:10037"]
+  #- ["mqtt.user", "loebszpu"]
+  #- ["mqtt.pass", "a49RldOpr7a_"]
+  
+  #  MQTT settings for my local Mosquito instance (Hassio)
+  #- ["mqtt.server", "192.168.1.254:8883"]
+  #- ["mqtt.ssl_ca_cert", "ca.pem"]
+  #- ["mqtt.user", "gaojing@hotmail.it"]
+  #- ["mqtt.pass", "Marika2414"]
+
+  # MQTT settings for AWS IoT
+  - ["mqtt.server", "a2i6vvtwfifj27.iot.eu-west-2.amazonaws.com:8883"]
+  - ["mqtt.ssl_cert", "d5a9f34f9b-certificate.pem.crt"]
+  - ["mqtt.ssl_key", "d5a9f34f9b-private.pem.key"]
+  - ["mqtt.ssl_ca_cert", "ca.pem"]
+
+  - ["hass.mqtt.publish.attribs_topic", "$aws/things/${device_id}/${object_id}/attributes"]
+  - ["hass.mqtt.publish.state_topic", "$aws/things/${device_id}/${object_id}/state"]
+  - ["hass.mqtt.command.topic", "$aws/things/${device_id}/${object_id}/cmd"]
+  # Set RETAIN false if connecting to AWS IoT
+  - ["hass.mqtt.publish.retain", false]
+  - ["hass.publish.interval", 30000]
+# - ["debug.level", 3]
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/ca-bundle
+  - origin: https://github.com/mongoose-os-libs/boards
+  - origin: https://github.com/mongoose-os-libs/wifi  
+  - origin: https://github.com/mongoose-os-libs/rpc-uart
+  - origin: https://github.com/mongoose-os-libs/rpc-service-config
+  - origin: https://github.com/mongoose-os-libs/rpc-service-wifi
+  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
+  - origin: https://github.com/mongoose-os-libs/rpc-service-ota
+  - name: hass-mqtt
+  # Enable the mjs lib to run the JS demo
+  - origin: https://github.com/mongoose-os-libs/mjs
+
+# Used by the mos tool to catch mos binaries incompatible with this file format
+manifest_version: 2017-09-29

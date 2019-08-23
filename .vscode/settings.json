@@ -1,0 +1,18 @@
+{
+  "files.associations": {
+    "mgos_hass_switch.h": "c",
+    "mgos_hass.h": "c",
+    "mgos.h": "c",
+    "system_error": "c",
+    "xlocale": "c",
+    "stdlib.h": "c",
+    "cmath": "c",
+    "type_traits": "c",
+    "xstddef": "c",
+    "xtr1common": "c",
+    "iosfwd": "c",
+    "mg_ha_common.h": "c",
+    "mg_ha_utils.h": "c"
+  },
+  "mos.port": ""
+}
