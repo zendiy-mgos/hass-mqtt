@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2018 Cesanta Software Limited
+ * Copyright (c) 2018 ZenDIY
  * All rights reserved
  *
  * Licensed under the Apache License, Version 2.0 (the ""License"");
@@ -15,8 +15,28 @@
  * limitations under the License.
  */
 
-#include "mgos.h"
+/*
+ * Home Assistant | MQTT entities library.
+ */
 
-enum mgos_app_init_result mgos_app_init(void) {
-  return MGOS_APP_INIT_SUCCESS;
+#ifndef MGOS_HASS_MQTT_H
+#define MGOS_HASS_MQTT_H
+
+#include <stdio.h>
+#include "mgos_hass.h"
+#include "mgos_hass_mqtt_switch.h"
+#include "mgos_hass_mqtt_sensor.h"
+#include "mgos_hass_mqtt_bsensor.h"
+//#include "mgos_hass_mqtt_<entity>.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Define here */
+
+#ifdef __cplusplus
 }
+#endif /* __cplusplus */
+
+#endif /* MGOS_HASS_MQTT_H */

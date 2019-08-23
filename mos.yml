@@ -1,73 +1,35 @@
-author: mongoose-os
-description: A JS-enabled demo Mongoose OS firmware
-# arch: PLATFORM
-version: 1.0
-libs_version: ${mos.version}
-modules_version: ${mos.version}
-mongoose_os_version: ${mos.version}
+author: ZenDIY
+type: lib
+description: Home Assistant | MQTT entities library
+version: 1.1
 
-# build_vars:
-
-# Optional. List of tags for online search.
-tags:
-  - c
-  - js
-  - home assistant
-  - mqtt platform
-
-# List of files / directories with C sources. No slashes at the end of dir names.
+includes:
+  - include
 sources:
-# - src-c
-  - src-js
-  
-# List of dirs. Files from these dirs will be copied to the device filesystem
+  - src
 filesystem:
-  - fs
-
 config_schema:
-  - ["device.id", "ZT??????"]
-  - ["mqtt.enable", true]
-  - ["mqtt.keep_alive", 15]
-  - ["mqtt.will_topic", "$aws/things/${device_id}/availability"]
-  - ["mqtt.will_message", "offline"]
-
-  #  MQTT settings for 'cloudmqtt'
-  #- ["mqtt.server", "m24.cloudmqtt.com:10037"]
-  #- ["mqtt.user", "loebszpu"]
-  #- ["mqtt.pass", "a49RldOpr7a_"]
-  
-  #  MQTT settings for my local Mosquito instance (Hassio)
-  #- ["mqtt.server", "192.168.1.254:8883"]
-  #- ["mqtt.ssl_ca_cert", "ca.pem"]
-  #- ["mqtt.user", "gaojing@hotmail.it"]
-  #- ["mqtt.pass", "Marika2414"]
-
-  # MQTT settings for AWS IoT
-  - ["mqtt.server", "a2i6vvtwfifj27.iot.eu-west-2.amazonaws.com:8883"]
-  - ["mqtt.ssl_cert", "d5a9f34f9b-certificate.pem.crt"]
-  - ["mqtt.ssl_key", "d5a9f34f9b-private.pem.key"]
-  - ["mqtt.ssl_ca_cert", "ca.pem"]
-
-  - ["hass.mqtt.publish.attribs_topic", "$aws/things/${device_id}/${object_id}/attributes"]
-  - ["hass.mqtt.publish.state_topic", "$aws/things/${device_id}/${object_id}/state"]
-  - ["hass.mqtt.command.topic", "$aws/things/${device_id}/${object_id}/cmd"]
-  # Set RETAIN false if connecting to AWS IoT
-  - ["hass.mqtt.publish.retain", false]
-  - ["hass.publish.interval", 30000]
-# - ["debug.level", 3]
+  - ["hass.mqtt", "o", {title: "MQTT settings"}]
+  - ["hass.mqtt.publish", "o", {title: "Publishing state settings"}]
+  - ["hass.mqtt.publish.state_topic", "s", "", {title: "Default topic for publishing state"}]
+  - ["hass.mqtt.publish.attribs_topic", "s", "", {title: "Default topic for publishing attributes"}]
+  - ["hass.mqtt.publish.attribs_pubf", "s", "", {title: "The format string for publishig attributes json payload"}]  
+  - ["hass.mqtt.publish.retain", "b", true, {title: "If the published message should have the retain flag on or not (default value True)"}]
+  - ["hass.mqtt.publish.qos", "i", 0, {title: "The maximum QoS level (default value 0)"}]
+  - ["hass.mqtt.command", "o", {title: "Receiving command settings"}]
+  - ["hass.mqtt.command.topic", "s", "", {title: "Default topic for subscribing to command"}]
+  - ["hass.mqtt.command.parsef", "s", "", {title: "The format string for parsing the command json payload"}]  
+  - ["hass.mqtt.availability", "o", {title: "Device availability settings"}]
+  - ["hass.mqtt.availability.enable_birth_msg", "b", true, {title: "Enable or disable the MQTT birth message (default value True)"}]
+  - ["hass.mqtt.availability.state_on", "s", "online", {title: "The value that represents the available state (default value 'online')"}]
+  - ["hass.mqtt.availability.state_off", "s", "offline", {title: "The value that represents the unavailable state (default value 'offline')"}]
+  - ["hass.mqtt.availability.state_pubf", "s", "", {title: "The format string for publishig the availability json payload"}]
 
 libs:
-  - origin: https://github.com/mongoose-os-libs/ca-bundle
-  - origin: https://github.com/mongoose-os-libs/boards
-  - origin: https://github.com/mongoose-os-libs/wifi  
-  - origin: https://github.com/mongoose-os-libs/rpc-uart
-  - origin: https://github.com/mongoose-os-libs/rpc-service-config
-  - origin: https://github.com/mongoose-os-libs/rpc-service-wifi
-  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
-  - origin: https://github.com/mongoose-os-libs/rpc-service-ota
-  - name: hass-mqtt
-  # Enable the mjs lib to run the JS demo
-  - origin: https://github.com/mongoose-os-libs/mjs
+  - name: hass
+  - origin: https://github.com/mongoose-os-libs/mqtt
+tags:
+  - c
+  - docs:misc:Empty
 
-# Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-09-29
