@@ -27,7 +27,7 @@ config_schema:
   - ["hass.mqtt.availability.state_pubf", "s", "", {title: "The format string for publishig the availability json payload"}]
 
 libs:
-  - name: hass
+  - origin: https://github.com/zendiy/mgos-hass
   - origin: https://github.com/mongoose-os-libs/mqtt
 tags:
   - c
