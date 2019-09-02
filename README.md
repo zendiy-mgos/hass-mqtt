@@ -117,7 +117,7 @@ Set library settings in your `mos.yml` file.
 	  
 	  return MGOS_APP_INIT_SUCCESS;
 	}
-**[JavaScript]** Otherwise, write the `init.js` file if you are implementing a JavaScript firmware.
+**[JavaScript]** Write the `init.js` file if you are implementing a JavaScript firmware.
 
 	load('api_hass_mqtt.js');
 	
