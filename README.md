@@ -86,7 +86,7 @@ Set library settings in your `mos.yml` file.
 	#include  "mgos_hass_mqtt.h"
 	
 	enum ha_toggle_state sensor_state_read() {       
-	  /* Read binary sensor here and return ON,
+	  /* Read binary-sensor here and return ON,
 	     OFF or UNKNOWN according sensor's readings */
 	  
 	  return UNKNOWN;
@@ -94,22 +94,22 @@ Set library settings in your `mos.yml` file.
 	
 	bool on_state_get(HA_ENTITY_HANDLE handle,
 	                  HA_ENTITY_BSTATE entity_state,
-	                  void  *user_data) {
+	                  void *user_data) {
 	  (void) handle;
 	  (void) user_data;
 
-	  /* Read binary sensor value */
+	  /* Read binary-sensor value */
 	  enum ha_toggle_state state = sensor_state_read();
 	
 	  return  mgos_hass_entity_bstate_set(entity_state, state, NULL);
 	}
 	
 	enum mgos_app_init_result mgos_app_init(void) {
-	  /* Set binary sensor configurations */
+	  /* Set binary-sensor configurations */
 	  ha_entity_cfg_t e = HA_ENTITY_CFG("my_first_test");   
 	  ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();	  
 	  
-	  /* Create and initialze binary_sensor.my_first_test */ 
+	  /* Create and initialze 'binary_sensor.my_first_test' */ 
 	  HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
 	  if (h == NULL) return MGOS_APP_INIT_ERROR;	  
 	  
@@ -122,17 +122,17 @@ Set library settings in your `mos.yml` file.
 	load('api_hass_mqtt.js');
 	
 	function sensorStateRead() {
-	  /* Read binary sensor here and return Hass.toggleState.ON,
+	  /* Read binary-sensor here and return Hass.toggleState.ON,
 	     Hass.toggleState.OFF or Hass.toggleState.UNKNOWN
 	     according sensor's readings */
 	     
 	  return Hass.toggleState.UNKNOWN;
 	}
 	
-	/* Set binary sensor configurations */
+	/* Set binary-sensor configurations */
 	let e = { object_id: "my_first_test" };
 	
-	/* Create and initialze binary_sensor.my_first_test */
+	/* Create and initialze 'binary_sensor.my_first_test' */
 	let h = Hass.BSENSOR.create(e);
 	if (h) {
 	  let s = dr.onStateGet(function(handle, entity_state, userdata) {
