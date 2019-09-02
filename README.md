@@ -120,18 +120,18 @@ Set library settings in your `mos.yml` file.
 	load('api_hass_mqtt.js');
 	
 	function sensorStateRead() {
-		/* Read binary sensor here and return Hass.toggleState.ON,
-		   Hass.toggleState.OFF or Hass.toggleState.UNKNOWN
-		   according sensor's readings */
-		return Hass.toggleState.UNKNOWN;
+	  /* Read binary sensor here and return Hass.toggleState.ON,
+	     Hass.toggleState.OFF or Hass.toggleState.UNKNOWN
+	     according sensor's readings */
+	  return Hass.toggleState.UNKNOWN;
 	}
 	
 	/* Create and initialze binary_sensor.my_first_test */
 	let e = { object_id: "my_first_test" };
 	let h = Hass.BSENSOR.create(dre);
 	if (h) {
-		let s = dr.onStateGet(function(handle, entity_state, userdata) {
-			let state = sensorStateRead();
-			return Hass.entityToggleStateSet(entity_state, state);
-		}, null);
+	  let s = dr.onStateGet(function(handle, entity_state, userdata) {
+	    let state = sensorStateRead();
+	    return Hass.entityToggleStateSet(entity_state, state);
+	  }, null);
 	}
