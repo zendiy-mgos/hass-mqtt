@@ -98,39 +98,40 @@ Set library settings in your `mos.yml` file.
         (void) user_data;
 
         /* Read binary sensor value */
-        enum ha_toggle_state state = sensor_state_read();        
-	    return  mgos_hass_entity_bstate_set(entity_state, state, NULL);
+        enum ha_toggle_state state = sensor_state_read();
+	
+	return  mgos_hass_entity_bstate_set(entity_state, state, NULL);
     }
     
     enum mgos_app_init_result mgos_app_init(void) {
         /* Create and initialze binary_sensor.my_first_test */ 
-	    ha_entity_cfg_t e =  HA_ENTITY_CFG("my_first_test");   
-	    ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();
+	   ha_entity_cfg_t e =  HA_ENTITY_CFG("my_first_test");   
+	   ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();
 	    
-	    HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
-	    if (h ==  NULL) return MGOS_APP_INIT_ERROR;
+	HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
+	if (h ==  NULL) return MGOS_APP_INIT_ERROR;
 	
-		mgos_hass_bsensor_on_state_get(h, on_state_get, NULL);
-		
-        return MGOS_APP_INIT_SUCCESS;
+	mgos_hass_bsensor_on_state_get(h, on_state_get, NULL);
+	
+	return MGOS_APP_INIT_SUCCESS;
     }
 **[JavaScript]** Otherwise, write the `init.js` file if you are implementing a JavaScript firmware.
 
     load('api_hass_mqtt.js');
     
     function sensorStateRead() {
-	    /* Read binary sensor here and return Hass.toggleState.ON,
-		    Hass.toggleState.OFF or Hass.toggleState.UNKNOWN
-		    according sensor's readings */
-        return Hass.toggleState.UNKNOWN;
+	/* Read binary sensor here and return Hass.toggleState.ON,
+	   Hass.toggleState.OFF or Hass.toggleState.UNKNOWN
+	   according sensor's readings */
+	return Hass.toggleState.UNKNOWN;
     }
     
     /* Create and initialze binary_sensor.my_first_test */
     let e = { object_id: "my_first_test" };
     let h = Hass.BSENSOR.create(dre);
     if (h) {
-	    let s = dr.onStateGet(function(handle, entity_state, userdata) {
-		    let state = sensorStateRead();
-		    return Hass.entityToggleStateSet(entity_state, state);
-	    }, null);
+	let s = dr.onStateGet(function(handle, entity_state, userdata) {
+		let state = sensorStateRead();
+		return Hass.entityToggleStateSet(entity_state, state);
+	}, null);
     }
