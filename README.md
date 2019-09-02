@@ -105,16 +105,16 @@ Set library settings in your `mos.yml` file.
 	}
 	
 	enum mgos_app_init_result mgos_app_init(void) {
-	
-	  /* Create and initialze binary_sensor.my_first_test */ 
+	  /* Set binary sensor configurations */
 	  ha_entity_cfg_t e = HA_ENTITY_CFG("my_first_test");   
-	  ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();
-	    
+	  ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();	  
+	  
+	  /* Create and initialze binary_sensor.my_first_test */ 
 	  HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
-	  if (h == NULL) return MGOS_APP_INIT_ERROR;
+	  if (h == NULL) return MGOS_APP_INIT_ERROR;	  
 	  
 	  mgos_hass_bsensor_on_state_get(h, on_state_get, NULL);
-	
+	  
 	  return MGOS_APP_INIT_SUCCESS;
 	}
 **[JavaScript]** Otherwise, write the `init.js` file if you are implementing a JavaScript firmware.
@@ -129,8 +129,11 @@ Set library settings in your `mos.yml` file.
 	  return Hass.toggleState.UNKNOWN;
 	}
 	
+	/* Set binary sensor configurations */
+	let e = { object_id: "my_first_test" };
+	
 	/* Create and initialze binary_sensor.my_first_test */
-	let h = Hass.BSENSOR.create({ object_id: "my_first_test" });
+	let h = Hass.BSENSOR.create(e);
 	if (h) {
 	  let s = dr.onStateGet(function(handle, entity_state, userdata) {
 	    let state = sensorStateRead();
