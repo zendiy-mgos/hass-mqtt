@@ -55,9 +55,13 @@ Add following configuration lines to the `configuration.yaml` file. If you are u
 
     binary_sensor:
       - platform: mqtt
-      - name: my first test
+        name: "My first test"
+	state_topic: "$aws/things/ZTABB28C/porta_blindata/state"
+	availability_topic: "$aws/things/ZTABB28C/availability"
+	json_attributes_topic: "$aws/things/ZTABB28C/porta_blindata/attributes"
+	device_class: door
 #### 2. Implement your Mongoose-OS firmware
-Include the library in your  `mos.yml` file.
+Include the library in your `mos.yml` file.
 
     libs:
       - origin: https://github.com/zendiy-mgos/hass-mqtt
@@ -77,9 +81,9 @@ Set library settings in your `mos.yml` file.
       - ["hass.mqtt.publish.attribs_topic", "hass/things/${device_id}/${object_id}/attributes"]
       - ["hass.mqtt.publish.state_topic", "hass/things/${device_id}/${object_id}/state"]
       - ["hass.mqtt.command.topic", "hass/things/${device_id}/${object_id}/cmd"]
-      # Publish binary sensor value every 10 seconds
+        # Publish binary sensor value every 10 seconds
       - ["hass.publish.interval", 10000]
-**[C/C++]** Write the `main.c` file if you are using C/C++ language for implementing your firmware.
+**C/C++ CODE** Write the `main.c` file if you are using C/C++ language for implementing your firmware.
 
 	#include  <stdbool.h> 
 	#include  "mgos.h"
@@ -117,7 +121,7 @@ Set library settings in your `mos.yml` file.
 	  
 	  return MGOS_APP_INIT_SUCCESS;
 	}
-**[JavaScript]** Write the `init.js` file if you are implementing a JavaScript firmware.
+**JavaScript CODE** Write the `init.js` file if you are implementing a JavaScript firmware.
 
 	load('api_hass_mqtt.js');
 	
