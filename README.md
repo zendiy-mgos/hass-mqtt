@@ -81,7 +81,7 @@ Set library settings in your `mos.yml` file.
       - ["hass.mqtt.publish.attribs_topic", "hass/things/${device_id}/${object_id}/attributes"]
       - ["hass.mqtt.publish.state_topic", "hass/things/${device_id}/${object_id}/state"]
       - ["hass.mqtt.command.topic", "hass/things/${device_id}/${object_id}/cmd"]
-        # Publish binary sensor value every 10 seconds
+        # Publish binary-sensor value every 10 seconds
       - ["hass.publish.interval", 10000]
 **C/C++ CODE**: write the `main.c` file if you are using C/C++ language for implementing your firmware.
 
