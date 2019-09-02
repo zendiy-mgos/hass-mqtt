@@ -81,40 +81,42 @@ Set library settings in your `mos.yml` file.
       - ["hass.publish.interval", 10000]
 **[C/C++]** Write the `main.c` file if you are using C/C++ language for implementing your firmware.
 
-    #include  <stdbool.h> 
-    #include  "mgos.h"
-    #include  "mgos_hass_mqtt.h"
+	#include  <stdbool.h> 
+	#include  "mgos.h"
+	#include  "mgos_hass_mqtt.h"
+	
+	enum ha_toggle_state sensor_state_read() {       
+          /* Read binary sensor here and return ON,
+             OFF or UNKNOWN according sensor's readings */
+	     
+	  return UNKNOWN;
+	}
     
-    enum ha_toggle_state sensor_state_read() {       
-        /* Read binary sensor here and return ON,
-           OFF or UNKNOWN according sensor's readings */
-        return UNKNOWN;
-    }
-    
-    bool on_state_get(HA_ENTITY_HANDLE handle,
-                      HA_ENTITY_BSTATE entity_state,
-                      void  *user_data) {
-        (void) handle;
-        (void) user_data;
+    	bool on_state_get(HA_ENTITY_HANDLE handle,
+                          HA_ENTITY_BSTATE entity_state,
+                          void  *user_data) {
+	  (void) handle;
+	  (void) user_data;
 
-        /* Read binary sensor value */
-        enum ha_toggle_state state = sensor_state_read();
+	  /* Read binary sensor value */
+	  enum ha_toggle_state state = sensor_state_read();
 	
-	return  mgos_hass_entity_bstate_set(entity_state, state, NULL);
-    }
-    
-    enum mgos_app_init_result mgos_app_init(void) {
-        /* Create and initialze binary_sensor.my_first_test */ 
-	   ha_entity_cfg_t e =  HA_ENTITY_CFG("my_first_test");   
-	   ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();
+	  return  mgos_hass_entity_bstate_set(entity_state, state, NULL);
+	}
+	
+	enum mgos_app_init_result mgos_app_init(void) {
+	
+	  /* Create and initialze binary_sensor.my_first_test */ 
+	  ha_entity_cfg_t e =  HA_ENTITY_CFG("my_first_test");   
+	  ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();
 	    
-	HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
-	if (h ==  NULL) return MGOS_APP_INIT_ERROR;
+	  HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
+	  if (h ==  NULL) return MGOS_APP_INIT_ERROR;
+	  
+	  mgos_hass_bsensor_on_state_get(h, on_state_get, NULL);
 	
-	mgos_hass_bsensor_on_state_get(h, on_state_get, NULL);
-	
-	return MGOS_APP_INIT_SUCCESS;
-    }
+	  return MGOS_APP_INIT_SUCCESS;
+	}
 **[JavaScript]** Otherwise, write the `init.js` file if you are implementing a JavaScript firmware.
 
 	load('api_hass_mqtt.js');
@@ -123,12 +125,12 @@ Set library settings in your `mos.yml` file.
 	  /* Read binary sensor here and return Hass.toggleState.ON,
 	     Hass.toggleState.OFF or Hass.toggleState.UNKNOWN
 	     according sensor's readings */
+	     
 	  return Hass.toggleState.UNKNOWN;
 	}
 	
 	/* Create and initialze binary_sensor.my_first_test */
-	let e = { object_id: "my_first_test" };
-	let h = Hass.BSENSOR.create(dre);
+	let h = Hass.BSENSOR.create({ object_id: "my_first_test" });
 	if (h) {
 	  let s = dr.onStateGet(function(handle, entity_state, userdata) {
 	    let state = sensorStateRead();
