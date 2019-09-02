@@ -55,20 +55,20 @@ Add following configuration lines to the `configuration.yaml` file. If you are u
 
     binary_sensor:
       - platform: mqtt
-        name: "My first test"
-	state_topic: "$aws/things/ZTABB28C/porta_blindata/state"
-	availability_topic: "$aws/things/ZTABB28C/availability"
-	json_attributes_topic: "$aws/things/ZTABB28C/porta_blindata/attributes"
-	device_class: door
+        name: "My first sensor"
+        state_topic: "hass/things/MYDEVICE_01/my_first_sensor/state"
+        availability_topic: "hass/things/MYDEVICE_01/availability"
+        json_attributes_topic: "hass/things/MYDEVICE_01/my_first_sensor/attributes"
+        device_class: door
 #### 2. Implement your Mongoose-OS firmware
 Include the library in your `mos.yml` file.
 
     libs:
       - origin: https://github.com/zendiy-mgos/hass-mqtt
-Set MQTT settings in your `mos.yml` file.
+Set device ID and MQTT settings in your `mos.yml` file.
 
     config_schema:
-      - ["mqtt.enable", true]
+      - ["device.id", "MYDEVICE_01"]
       - ["mqtt.server", "<your_hass_ip_address>:8883"]
       - ["mqtt.user", "<your_hass_mqtt_broker_username>"]
       - ["mqtt.pass", "your_hass_mqtt_broker_password"]
@@ -83,7 +83,7 @@ Set library settings in your `mos.yml` file.
       - ["hass.mqtt.command.topic", "hass/things/${device_id}/${object_id}/cmd"]
         # Publish binary sensor value every 10 seconds
       - ["hass.publish.interval", 10000]
-**C/C++ CODE** Write the `main.c` file if you are using C/C++ language for implementing your firmware.
+**C/C++ CODE**: write the `main.c` file if you are using C/C++ language for implementing your firmware.
 
 	#include  <stdbool.h> 
 	#include  "mgos.h"
@@ -110,10 +110,10 @@ Set library settings in your `mos.yml` file.
 	
 	enum mgos_app_init_result mgos_app_init(void) {
 	  /* Set binary-sensor configurations */
-	  ha_entity_cfg_t e = HA_ENTITY_CFG("my_first_test");   
+	  ha_entity_cfg_t e = HA_ENTITY_CFG("my_first_sensor");   
 	  ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();	  
 	  
-	  /* Create and initialze 'binary_sensor.my_first_test' */ 
+	  /* Create and initialze 'binary_sensor.my_first_sensor' */ 
 	  HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
 	  if (h == NULL) return MGOS_APP_INIT_ERROR;	  
 	  
@@ -121,7 +121,7 @@ Set library settings in your `mos.yml` file.
 	  
 	  return MGOS_APP_INIT_SUCCESS;
 	}
-**JavaScript CODE** Write the `init.js` file if you are implementing a JavaScript firmware.
+**JavaScript CODE**: write the `init.js` file if you are implementing a JavaScript firmware.
 
 	load('api_hass_mqtt.js');
 	
@@ -134,9 +134,9 @@ Set library settings in your `mos.yml` file.
 	}
 	
 	/* Set binary-sensor configurations */
-	let e = { object_id: "my_first_test" };
+	let e = { object_id: "my_first_sensor" };
 	
-	/* Create and initialze 'binary_sensor.my_first_test' */
+	/* Create and initialze 'binary_sensor.my_first_sensor' */
 	let h = Hass.BSENSOR.create(e);
 	if (h) {
 	  let s = dr.onStateGet(function(handle, entity_state, userdata) {
