@@ -91,10 +91,10 @@ Set library settings in your `mos.yml` file.
 	  
 	  return UNKNOWN;
 	}
-    
-    	bool on_state_get(HA_ENTITY_HANDLE handle,
-                          HA_ENTITY_BSTATE entity_state,
-                          void  *user_data) {
+	
+	bool on_state_get(HA_ENTITY_HANDLE handle,
+	                  HA_ENTITY_BSTATE entity_state,
+	                  void  *user_data) {
 	  (void) handle;
 	  (void) user_data;
 
