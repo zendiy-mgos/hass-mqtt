@@ -86,9 +86,9 @@ Set library settings in your `mos.yml` file.
 	#include  "mgos_hass_mqtt.h"
 	
 	enum ha_toggle_state sensor_state_read() {       
-          /* Read binary sensor here and return ON,
-             OFF or UNKNOWN according sensor's readings */
-	     
+	  /* Read binary sensor here and return ON,
+	     OFF or UNKNOWN according sensor's readings */
+	  
 	  return UNKNOWN;
 	}
     
@@ -107,11 +107,11 @@ Set library settings in your `mos.yml` file.
 	enum mgos_app_init_result mgos_app_init(void) {
 	
 	  /* Create and initialze binary_sensor.my_first_test */ 
-	  ha_entity_cfg_t e =  HA_ENTITY_CFG("my_first_test");   
+	  ha_entity_cfg_t e = HA_ENTITY_CFG("my_first_test");   
 	  ha_mqtt_bsensor_cfg_t cfg = MK_HA_MQTT_BSENSOR_CFG();
 	    
 	  HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&e, &cfg);
-	  if (h ==  NULL) return MGOS_APP_INIT_ERROR;
+	  if (h == NULL) return MGOS_APP_INIT_ERROR;
 	  
 	  mgos_hass_bsensor_on_state_get(h, on_state_get, NULL);
 	
