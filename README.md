@@ -5,7 +5,7 @@ The [Mongoose-OS](https://mongoose-os.com/) library for making [Home Assistant](
  - Sensors
  - Switches
 ## GET STARTED
-Build up your device in few minutes just starting from one of following samples.
+Build up your device in few minutes just starting from one of the following samples.
 
 |Sample|Notes|
 |--|--|
