@@ -6,6 +6,7 @@ The [Mongoose-OS](https://mongoose-os.com/) library for making [Home Assistant](
  - Switches
 ## GET STARTED
 Build up your device in few minutes just starting from one of following samples.
+
 |Sample|Notes|
 |--|--|
 |[hass-mqtt-demo](https://github.com/zendiy-mgos/hass-mqtt-demo)|Shows you how to build firmware for managing sensors, binary sensors, switches, etc. integrated in an all-in-one device.|
