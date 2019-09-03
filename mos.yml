@@ -30,6 +30,8 @@ libs:
   - origin: https://github.com/mongoose-os-libs/mqtt
 tags:
   - c
-  - docs:misc:Empty
+  - js
+  - home assistant
+  - mqtt
 
 manifest_version: 2017-09-29
