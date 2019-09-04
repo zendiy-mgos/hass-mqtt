@@ -1,45 +1,46 @@
-# Home Assistant MQTT Devices Mongoose OS library
-## Overview
+Home Assistant MQTT Devices Mongoose OS library
+===============================================
+# Overview
 The [Mongoose-OS](https://mongoose-os.com/) library for making [Home Assistant](https://www.home-assistant.io/) compatible MQTT devices. Following Home Assistant MQTT entities are currently supported:
  - Binary sensors
  - Sensors
  - Switches
-## GET STARTED
+# GET STARTED
 Build up your device in few minutes just starting from one of the following samples.
 
 |Sample|Notes|
 |--|--|
 |[hass-mqtt-demo](https://github.com/zendiy-mgos/hass-mqtt-demo)|Shows you how to build firmware for managing sensors, binary sensors, switches, etc. integrated in an all-in-one device.|
-## Usage
+# Usage
 Include the library into your `mos.yml` file.
 
     libs:
       - origin: https://github.com/zendiy-mgos/hass-mqtt
-## Configuration
+# Configuration
 The following configuration section is added to the `conf0.json` file in your mongoose-os project.
-
-    "hass": {
-	  "mqtt": {
-	    "publish": {
-	      "state_topic": "",
-	      "attribs_topic": "",
-	      "attribs_pubf": "",
-	      "retain": true,
-	      "qos": 0
-	    {,
-	    "command": {
-	      "topic": "",
-	      "parsef": ""
-	    },
-	    "availability": {
-	      "enable_birth_msg": true,
-	      "state_on": "online",
-	      "state_off": "offline",
-	      "state_pubf": ""
-	    }
-	  }
+```json
+"hass": {
+  "mqtt": {
+    "publish": {
+      "state_topic": "",
+      "attribs_topic": "",
+      "attribs_pubf": "",
+      "retain": true,
+      "qos": 0
+    },
+    "command": {
+      "topic": "",
+      "parsef": ""
+    },
+    "availability": {
+      "enable_birth_msg": true,
+      "state_on": "online",
+      "state_off": "offline",
+      "state_pubf": ""
     }
-
+  }
+}
+```
 |Property|Type|Default|Description|
 |--|--|--|--|
 |hass.mqtt.publish.**state_topic**|string||Default topic for publishing state|
@@ -53,3 +54,26 @@ The following configuration section is added to the `conf0.json` file in your mo
 |hass.mqtt.availability.**state_on**|string|`'online'`|The value that represents the available state|
 |hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
 |hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
+# API reference
+## `json_scanf()`, `json_vscanf`
+```c
+  // str has the following JSON string (notice keys are out of order):
+  // { "a": 123, "d": true, "b": [1, 2], "c": "hi" }
+
+  int a = 0, d = 0;
+  char *c = NULL;
+  void *my_data = NULL;
+  json_scanf(str, strlen(str), "{ a:%d, b:%M, c:%Q, d:%B }",
+             &a, scan_array, my_data, &c, &d);
+
+  // This function is called by json_scanf() call above.
+  // str is "[1, 2]", user_data is my_data.
+  static void scan_array(const char *str, int len, void *user_data) {
+    struct json_token t;
+    int i;
+    printf("Parsing array: %.*s\n", len, str);
+    for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
+      printf("Index %d, token [%.*s]\n", i, t.len, t.ptr);
+    }
+  }
+```
