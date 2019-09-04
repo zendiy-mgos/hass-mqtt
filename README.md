@@ -13,9 +13,14 @@ Build up your device in few minutes just starting from one of the following samp
 |[hass-mqtt-demo](https://github.com/zendiy-mgos/hass-mqtt-demo)|Shows you how to build firmware for managing sensors, binary sensors, switches, etc. integrated in an all-in-one device.|
 # Usage
 Include the library into your `mos.yml` file.
-
-    libs:
-      - origin: https://github.com/zendiy-mgos/hass-mqtt
+```yaml
+libs:
+  - origin: https://github.com/zendiy-mgos/hass-mqtt
+```
+If you are developing a JavaScript firmware load into your `init.js` the `api_hass_mqtt.js` file.
+```js
+load('api_hass_mqtt.js');
+```
 # Configuration
 The following configuration section is added to the `conf0.json` file in your mongoose-os project.
 ```json
@@ -54,26 +59,17 @@ The following configuration section is added to the `conf0.json` file in your mo
 |hass.mqtt.availability.**state_on**|string|`'online'`|The value that represents the available state|
 |hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
 |hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
-# API reference
-## `json_scanf()`, `json_vscanf`
+# Binary sensors API reference
+## C/C++ API
+### mgos_hass_bsensor_create()
 ```c
-  // str has the following JSON string (notice keys are out of order):
-  // { "a": 123, "d": true, "b": [1, 2], "c": "hi" }
-
-  int a = 0, d = 0;
-  char *c = NULL;
-  void *my_data = NULL;
-  json_scanf(str, strlen(str), "{ a:%d, b:%M, c:%Q, d:%B }",
-             &a, scan_array, my_data, &c, &d);
-
-  // This function is called by json_scanf() call above.
-  // str is "[1, 2]", user_data is my_data.
-  static void scan_array(const char *str, int len, void *user_data) {
-    struct json_token t;
-    int i;
-    printf("Parsing array: %.*s\n", len, str);
-    for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
-      printf("Index %d, token [%.*s]\n", i, t.len, t.ptr);
-    }
-  }
+HA_ENTITY_HANDLE mgos_hass_bsensor_create(ha_entity_cfg_t *entity_cfg,
+                                          ha_mqtt_bsensor_cfg_t *cfg);
 ```
+Creates a binary sensor handle providing entity and mqtt configurations. Returns `NULL` in case of error.
+## JS API
+### Hass.BSENSOR.create()
+```js
+Hass.BSENSOR.create(entity_cfg, mqtt_cfg);
+```
+Creates a binary sensor instance providing entity and mqtt configurations. Returns `null` in case of error.# Sensors API reference
