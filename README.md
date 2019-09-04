@@ -68,19 +68,19 @@ HA_ENTITY_HANDLE mgos_hass_bsensor_create(ha_entity_cfg_t *entity_cfg,
 ```
 **Creates a binary sensor handle providing entity configuration and, optionally, the MQTT configuration. Returns `NULL` in case of error.**
 
-Example 1 - create a binary sensor that publishes its state according the `hass.publish.interval` setting defined in the `mos.yml` file. If this setting is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
+Example 1 - create a binary sensor that publishes its state according the `hass.publish.interval` config defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```c
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
-HA_ENTITY_HANDLE dr = mgos_hass_bsensor_create(&entity_cfg, NULL);
+HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&entity_cfg, NULL);
 ```
-Example 2 - create a binary sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` setting defined in the `mos.yml` file. 
+Example 2 - create a binary sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` config defined in the `mos.yml` file. 
 ```c
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 ha_mqtt_bsensor_cfg_t mqtt_cfg = MK_HA_MQTT_BSENSOR_CFG();
 mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
-HA_ENTITY_HANDLE dr = mgos_hass_bsensor_create(&entity_cfg, &mqtt_cfg);
+HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&entity_cfg, &mqtt_cfg);
 ```
 ## Sensors API
 ### mgos_hass_sensor_create()
@@ -90,19 +90,19 @@ HA_ENTITY_HANDLE mgos_hass_sensor_create(ha_entity_cfg_t *entity_cfg,
 ```
 **Creates a sensor handle providing entity configuration and, optionally, the MQTT configuration. Returns `NULL` in case of error.**
 
-Example 1 - create a sensor that publishes its state according the `hass.publish.interval` setting defined in the `mos.yml` file. If this setting is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
+Example 1 - create a sensor that publishes its state according the `hass.publish.interval` config defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```c
 /* Create and initialze Home Assistant entity sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
-HA_ENTITY_HANDLE dr = mgos_hass_sensor_create(&entity_cfg, NULL);
+HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, NULL);
 ```
-Example 2 - create a sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` setting defined in the `mos.yml` file. 
+Example 2 - create a sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` config defined in the `mos.yml` file. 
 ```c
 /* Create and initialze Home Assistant entity sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 ha_mqtt_sensor_cfg_t mqtt_cfg = MK_HA_MQTT_SENSOR_CFG();
 mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
-HA_ENTITY_HANDLE dr = mgos_hass_sensor_create(&entity_cfg, &mqtt_cfg);
+HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, &mqtt_cfg);
 ```
 # JS API
 ## Binary sensors API
@@ -112,13 +112,13 @@ Hass.BSENSOR.create(entity_cfg, mqtt_cfg);
 ```
 **Creates a binary sensor instance providing entity configuration and, optionally, the MQTT configuration. Returns `null` in case of error.**
 
-Example 1 - create a binary sensor that publishes its state according the `hass.publish.interval` setting defined in the `mos.yml` file. If this setting is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
+Example 1 - create a binary sensor that publishes its state according the `hass.publish.interval` config defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```js
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 let entity_cfg = { object_id: "my_first_sensor" };
 let s = Hass.BSENSOR.create(entity_cfg);
 ```
-Example 2 - create a binary sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` setting defined in the `mos.yml` file. 
+Example 2 - create a binary sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` config defined in the `mos.yml` file. 
 ```js
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 let entity_cfg = { object_id: "my_first_sensor" };
@@ -132,13 +132,13 @@ Hass.SENSOR.create(entity_cfg, mqtt_cfg);
 ```
 **Creates a sensor instance providing entity configuration and, optionally, the MQTT configuration. Returns `null` in case of error.**
 
-Example 1 - create a sensor that publishes its state according the `hass.publish.interval` setting defined in the `mos.yml` file. If this setting is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
+Example 1 - create a sensor that publishes its state according the `hass.publish.interval` config defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```js
 /* Create and initialze Home Assistant entity sensor.my_first_sensor */
 let entity_cfg = { object_id: "my_first_sensor" };
 let s = Hass.SENSOR.create(entity_cfg);
 ```
-Example 2 - create a sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` setting defined in the `mos.yml` file. 
+Example 2 - create a sensor that publishes its state when the MQTT connection is established and periodically every 2 seconds ignoring the `hass.publish.interval` config defined in the `mos.yml` file. 
 ```js
 /* Create and initialze Home Assistant entity sensor.my_first_sensor */
 let entity_cfg = { object_id: "my_first_sensor" };
