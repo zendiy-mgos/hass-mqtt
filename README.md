@@ -73,7 +73,7 @@ Creates a binary sensor and returns its HANDLE. Returns `NULL` in case of error.
 |entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
 |mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_bsensor_cfg_t](#ha_mqtt_bsensor_cfg_t) for more details.|
 
-**Example** - Create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
+**Example** - Create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```c
 /* state-get handler for reading binary sensor state */
 bool my_on_state_get(HA_ENTITY_HANDLE handle,
@@ -85,7 +85,8 @@ bool my_on_state_get(HA_ENTITY_HANDLE handle,
      with the proper value instead of UNKNOWN */
   enum ha_toggle_state sensor_state = UNKNOWN;
   
-  return mgos_hass_entity_bstate_set(entity_state, sensor_state, NULL);
+  return mgos_hass_entity_bstate_setf(entity_state, sensor_state,
+    "{ sys_uptime:%f }", mgos_uptime());
 }
 
 /* Set configuration parameters */
@@ -112,7 +113,7 @@ Creates a sensor and returns its HANDLE. Returns `NULL` in case of error.
 |entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
 |mqtt_cfg| MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](ha_mqtt_sensor_cfg_t) for more details.|
 
-**Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
+**Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```c
 /* state-get handler for reading sensor value */
 bool my_on_state_get(HA_ENTITY_HANDLE handle,
@@ -124,7 +125,8 @@ bool my_on_state_get(HA_ENTITY_HANDLE handle,
      with the proper value instead of 0.0 */
   double sensor_value = 0.0;
   
-  return mgos_hass_entity_fstate_set(entity_state, sensor_value, NULL);
+  return mgos_hass_entity_fstate_setf(entity_state, sensor_value,
+    "{ sys_uptime:%f }", mgos_uptime());
 }
 
 /* Set configuration parameters */
@@ -152,7 +154,7 @@ Creates a binary sensor object. Returns `NULL` in case of error.
 |entity_cfg|Configuration parameters.|
 |mqtt_cfg|(Optional) MQTT configuration parameters.|
 
-**Example** - Create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
+**Example** - Create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```js
 /* Set configuration parameters */
 let entity_cfg = { object_id: "my_first_sensor" };
@@ -166,7 +168,8 @@ if (s) {
        with the proper value instead of Hass.toggleState.UNKNOWN */
     let sensor_state = Hass.toggleState.UNKNOWN;
     
-    return Hass.entityToggleStateSet(entity_state, sensor_state);
+    return Hass.entityToggleStateSet(entity_state, sensor_state,
+      JSON.stringify({ sys_uptime: Sys.uptime() }));
   }, null);
 }
 ```
@@ -182,7 +185,7 @@ Creates a sensor object. Returns `NULL` in case of error.
 |entity_cfg|Configuration parameters.|
 |mqtt_cfg|MQTT configuration parameters.|
 
-**Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
+**Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```js
 /* Set configuration parameters */
 let entity_cfg = { object_id: "my_first_sensor" };
@@ -198,7 +201,9 @@ if (s) {
     /* Read sensor here and set <sensor_value> variable below
        with the proper value instead of 0.0 */
     let sensor_value = 0.0;
-    return Hass.entityXStateSet(entity_state, sensor_value);
+    
+    return Hass.entityXStateSet(entity_state, sensor_value,
+     JSON.stringify({ sys_uptime: Sys.uptime() }));
   }, null);
 }
 ```
