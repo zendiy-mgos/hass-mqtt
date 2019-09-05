@@ -60,7 +60,11 @@ The following configuration section is added to the `conf0.json` file in your mo
 |hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
 |hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
 # C/C++ API reference
-## Binary sensors API
+TABLE OF CONTENTS
+ - [Binary sensors API](C_Binary_sensors_API)
+ - [Sensors API](C_Sensors_API)
+ - [Switches API](C_Switches_API)
+## <a name="C_Binary_sensors_API"></a>Binary sensors API
 ### mgos_hass_bsensor_create()
 ```c
 HA_ENTITY_HANDLE mgos_hass_bsensor_create(ha_entity_cfg_t *entity_cfg,
@@ -101,7 +105,7 @@ if (h != NULL) {
   mgos_hass_bsensor_on_state_get(h, my_on_state_get, NULL);
 }
 ```
-## Sensors API
+## <a name="C_Sensors_API"></a>Sensors API
 ### mgos_hass_sensor_create()
 ```c
 HA_ENTITY_HANDLE mgos_hass_sensor_create(ha_entity_cfg_t *entity_cfg,
@@ -143,7 +147,7 @@ if (h != NULL) {
   mgos_hass_sensor_on_state_get(h, my_on_state_get, NULL);
 }
 ```
-## Switches API
+## <a name="C_Switches_API"></a>Switches API
 ### mgos_hass_switch_create()
 ```c
 HA_ENTITY_HANDLE mgos_hass_switch_create(ha_entity_cfg_t *entity_cfg,
@@ -207,7 +211,11 @@ if (h != NULL) {
 }
 ```
 # JS API
-## Binary sensors API
+TABLE OF CONTENTS
+ - [Binary sensors API](JS_Binary_sensors_API)
+ - [Sensors API](JS_Sensors_API)
+ - [Switches API](JS_Switches_API)
+## <a name="JS_Binary_sensors_API"></a>Binary sensors API
 ### Hass.BSENSOR.create()
 ```js
 Hass.BSENSOR.create(entity_cfg, mqtt_cfg);
@@ -239,7 +247,7 @@ if (s) {
   }, null);
 }
 ```
-## Sensors API
+## <a name="JS_Sensors_API"></a>Sensors API
 ### Hass.SENSOR.create()
 ```js
 Hass.SENSOR.create(entity_cfg, mqtt_cfg);
@@ -274,7 +282,7 @@ if (s) {
   }, null);
 }
 ```
-## Switches API
+## <a name="JS_Switches_API"></a>Switches API
 ### Hass.SWITCH.create()
 ```js
 Hass.SWITCH.create(entity_cfg, mqtt_cfg);
