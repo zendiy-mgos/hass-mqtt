@@ -81,14 +81,19 @@ bool my_on_state_get(HA_ENTITY_HANDLE handle,
                      void *user_data) {
   (void) handle;
   (void) user_data;
-  enum ha_toggle_state state = UNKNOWN; // NOTE: replace UNKNOWN with your sensor state
-  return mgos_hass_entity_bstate_set(entity_state, state, NULL);
+  /* Read binary sensor state here and set <sensor_state> variable below
+     with the proper value instead of UNKNOWN */
+  enum ha_toggle_state sensor_state = UNKNOWN;
+  
+  return mgos_hass_entity_bstate_set(entity_state, sensor_state, NULL);
 }
 
-/* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
+/* Set configuration parameters */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 ha_mqtt_bsensor_cfg_t mqtt_cfg = MK_HA_MQTT_BSENSOR_CFG();
 mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
+
+/* Create the binary sensor */
 HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&entity_cfg, &mqtt_cfg);
 if (h != NULL) {
   mgos_hass_bsensor_on_state_get(h, my_on_state_get, NULL);
@@ -115,16 +120,20 @@ bool my_on_state_get(HA_ENTITY_HANDLE handle,
                      void *user_data) {
   (void) handle;
   (void) user_data;
-  double sensor_value = 0.0; // NOTE: replace 0.0 with your sensor value
+  /* Read sensor here and set <sensor_value> variable below
+     with the proper value instead of 0.0 */
+  double sensor_value = 0.0;
+  
   return mgos_hass_entity_fstate_set(entity_state, sensor_value, NULL);
 }
 
-/* Create and initialze Home Assistant entity sensor.my_first_sensor */
+/* Set configuration parameters */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 ha_mqtt_sensor_cfg_t mqtt_cfg = MK_HA_MQTT_SENSOR_CFG();
 mqtt_cfg.sens_cfg.state_pubf = "%.1f";
 mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
 
+/* Create the sensor */
 HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, &mqtt_cfg);
 if (h != NULL) {
   mgos_hass_sensor_on_state_get(h, my_on_state_get, NULL);
@@ -145,10 +154,21 @@ Creates a binary sensor object. Returns `NULL` in case of error.
 
 **Example** - Create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
 ```js
-/* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
+/* Set configuration parameters */
 let entity_cfg = { object_id: "my_first_sensor" };
 let mqtt_cfg = { pub_cfg: { timer_timeout: 2000 } }; //milliseconds
+
+/* Create the binary sensor */
 let s = Hass.BSENSOR.create(entity_cfg, mqtt_cfg);
+if (s) {
+  s.onStateGet(function(handle, entity_state, userdata) {
+    /* Read binary sensor state here and set <sensor_state> variable below
+       with the proper value instead of Hass.toggleState.UNKNOWN */
+    let sensor_state = Hass.toggleState.UNKNOWN;
+    
+    return Hass.entityToggleStateSet(entity_state, sensor_state);
+  }, null);
+}
 ```
 ## Sensors API
 ### Hass.SENSOR.create()
@@ -164,8 +184,21 @@ Creates a sensor object. Returns `NULL` in case of error.
 
 **Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
 ```js
-/* Create and initialze Home Assistant entity sensor.my_first_sensor */
+/* Set configuration parameters */
 let entity_cfg = { object_id: "my_first_sensor" };
-let mqtt_cfg = { pub_cfg: { timer_timeout: 2000 } }; //milliseconds
+let mqtt_cfg = {
+  sens_cfg: { state_pubf: "%.1f" },
+  pub_cfg: { timer_timeout: 2000 } //milliseconds
+};
+
+/* Create the sensor */
 let s = Hass.SENSOR.create(entity_cfg, mqtt_cfg);
+if (s) {
+  s.onStateGet(function(handle, entity_state, userdata) {
+    /* Read sensor here and set <sensor_value> variable below
+       with the proper value instead of 0.0 */
+    let sensor_value = 0.0;
+    return Hass.entityXStateSet(entity_state, sensor_value);
+  }, null);
+}
 ```
