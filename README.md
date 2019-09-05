@@ -154,7 +154,7 @@ Creates a switch and returns its HANDLE. Returns `NULL` in case of error.
 |entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
 |mqtt_cfg| (Optionla) MQTT configuration parameters. See [ha_mqtt_switch_cfg_t](ha_mqtt_switch_cfg_t) for more details.|
 
-**Example** - Create a switch that publishes its state when the MQTT connection, turns on the built-in LED when the `'ON'` command is received, and turns off it after 5 seconds. The system uptime is published as entity's attribute as well. 
+**Example** - Create a switch that publishes its state when the MQTT connection, turns on the built-in LED when the `'ON'` command is received, and turns it off automatically after 5 seconds. The system uptime is published as entity's attribute as well. 
 ```c
 /* state-get handler for reading switch state */
 bool my_on_state_get(HA_ENTITY_HANDLE handle,
@@ -182,25 +182,17 @@ bool my_on_state_set(HA_ENTITY_HANDLE handle,
   (void) handle;
   (void) user_data;
 
-  bool gpio_value;
-  switch(state) {
-    case ON:
-      gpio_value = mgos_sys_config_get_board_led1_active_high();
-      break;
-    case OFF:
-      gpio_value = !mgos_sys_config_get_board_led1_active_high();
-      break;
-    default:
-      return false;
-  };
-  mgos_gpio_write(mgos_sys_config_get_board_led1_pin(), gpio_value);
-  return true;
+  if (state != UNKNOWN) {
+    bool ish = mgos_sys_config_get_board_led1_active_high();
+    mgos_gpio_write(mgos_sys_config_get_board_led1_pin(), (state == ON ? ish : !ish));
+  }
+  return (state != UNKNOWN);
 }
 
 /* Set configuration parameters */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_switch");
 ha_mqtt_switch_cfg_t mqtt_cfg = MK_HA_MQTT_SWITCH_CFG();
-mqtt_cfg.switch_cfg.inching_timeout = 5000; // milliseconds
+mqtt_cfg.switch_cfg.inching_timeout = 5000; // (milliseconds) turn off after 5 secs.
 
 /* Create the switch */ 
 HA_ENTITY_HANDLE h = mgos_hass_switch_create(&entity_cfg, &mqtt_cfg);
@@ -271,7 +263,51 @@ if (s) {
     let sensor_value = 0.0;
     
     return Hass.entityXStateSet(entity_state, sensor_value,
-     JSON.stringify({ sys_uptime: Sys.uptime() }));
+      JSON.stringify({ sys_uptime: Sys.uptime() }));
+  }, null);
+}
+```
+## Switches API
+### Hass.SWITCH.create()
+```js
+Hass.SWITCH.create(entity_cfg, mqtt_cfg);
+```
+Creates a switch object. Returns `NULL` in case of error.
+
+|Parameter||
+|--|--|
+|entity_cfg|Configuration parameters.|
+|mqtt_cfg|MQTT configuration parameters.|
+
+**Example** - Create a switch that publishes its state when the MQTT connection, turns on the built-in LED when the `'ON'` command is received, and turns it off automatically after 5 seconds. The system uptime is published as entity's attribute as well. 
+```js
+/* Set configuration parameters */
+let entity_cfg = { object_id: "my_first_switch" };
+let mqtt_cfg = { switch_cfg: { inching_timeout: 5000 } };
+
+/* Create the switch */
+let s = Hass.SWITCH.create(entity_cfg, mqtt_cfg);
+if (s) {
+  s.onStateGet(function(handle, entity_state, userdata) {
+    let switch_state;
+    let gpio_value = GPIO.read(Cfg.get('board.led1.pin'));
+    if (Cfg.get('board.led1.active_high')) {
+      switch_state = (gpio_value ? Hass.toggleState.ON : Hass.toggleState.OFF);
+    } else {
+      switch_state = (gpio_value ? Hass.toggleState.OFF : Hass.toggleState.ON);
+    }
+    
+    return Hass.entityToggleStateSet(entity_state, switch_state,
+      JSON.stringify({ sys_uptime: Sys.uptime() }));
+  }, null);
+  
+  s.onStateSet(function(handle, state, userdata) {
+    if (state !== Hass.toggleState.UNKNOWN) {
+      let iah = Cfg.get('board.led1.active_high');
+      let gpio_value = (state === Hass.toggleState.ON ? iah : !iah);
+      GPIO.write(Cfg.get('board.led1.pin'), gpio_value);
+    }
+    return (state !== Hass.toggleState.UNKNOWN);
   }, null);
 }
 ```
