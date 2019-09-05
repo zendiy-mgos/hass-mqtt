@@ -59,6 +59,7 @@ The following configuration section is added to the `conf0.json` file in your Mo
 |<a name="hass.mqtt.availability.state_on"></a>hass.mqtt.availability.**state_on**|string|`'online'`|The value that represents the available state|
 |<a name="hass.mqtt.availability.state_off"></a>hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
 |<a name="hass.mqtt.availability.state_pubf"></a>hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
+# Session variables
 # C/C++ API reference
 TABLE OF CONTENTS
  - [Common data types and API](#C_Common_data_types_and_API)
@@ -79,13 +80,10 @@ Configuration parameters for generic MQTT sensors.
 
 |Field||
 |--|--|
-|state_topic|MQTT topic for publishing state. If `NULL`, the [hass.mqtt.publish.state_topic](#hass.mqtt.publish.state_topic) config is used.
-Following session variables can be used: `${object_id}`, `${device_id}`|
-|state_pubf|Format string for publishing state. It uses `json_vasprintf()`-like [format](https://github.com/cesanta/frozen/blob/master/README.md#json_asprintf-json_vasprintf).
-Following session variables can be used: `${state.attribs}`|
-|attribs_topic|MQTT topic for publishing attributes. If `NULL`, the [hass.mqtt.publish.attribs_topic](#hass.mqtt.publish.attribs_topic) config is used.
-Following session variables can be used: `${object_id}`, `${device_id}`|
-|attribs_pubf|Format string for publishing attributes json-payload. It uses `json_vasprintf()`-like [format](https://github.com/cesanta/frozen/blob/master/README.md#json_asprintf-json_vasprintf).|
+|state_topic|MQTT topic for publishing state. Allowed session variables: `${object_id}`, `${device_id}`. If `NULL`, the [hass.mqtt.publish.state_topic](#hass.mqtt.publish.state_topic) config is used.|
+|state_pubf|Format string for publishing state. It uses `json_vasprintf()`-like [format](https://github.com/cesanta/frozen/blob/master/README.md#json_asprintf-json_vasprintf). Allowed session variables: `${state.attribs}`. It can be `NULL` if the state is a string value.|
+|attribs_topic|MQTT topic for publishing attributes. Allowed session variables: `${object_id}`, `${device_id}`. If `NULL`, the [hass.mqtt.publish.attribs_topic](#hass.mqtt.publish.attribs_topic) config is used.|
+|attribs_pubf|(Optional) Format string for publishing attributes json-payload. Only `%Q` format ia allowed (e.g., `'{ state: { attributes:%Q' } }`). If `NULL`, the [hass.mqtt.publish.attribs_pubf](#hass.mqtt.publish.attribs_pubf) config is used.|
 
 ## <a name="C_Binary_sensors_API"></a>Binary sensors API
 ### mgos_hass_bsensor_create()
