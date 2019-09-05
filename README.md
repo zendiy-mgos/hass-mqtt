@@ -61,9 +61,29 @@ The following configuration section is added to the `conf0.json` file in your Mo
 |hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
 # C/C++ API reference
 TABLE OF CONTENTS
+ - [Common data types and API](#C_Common_data_types_and_API)
  - [Binary sensors API](#C_Binary_sensors_API)
  - [Sensors API](#C_Sensors_API)
  - [Switches API](#C_Switches_API)
+## <a name="C_Common_data_types_and_API"></a>Common data types and API
+### ha_mqtt_base_sensor_cfg_t
+```c
+typedef struct ha_mqtt_base_sensor_cfg {
+  const char *state_topic;
+  const char *state_pubf;
+  const char *attribs_topic;
+  const char *attribs_pubf;
+} ha_mqtt_base_sensor_cfg_t;
+```
+Configuration parameters for generic MQTT sensors.
+
+|Field||
+|--|--|
+|state_topic||
+|state_pubf||
+|attribs_topic||
+|attribs_pubf||
+
 ## <a name="C_Binary_sensors_API"></a>Binary sensors API
 ### mgos_hass_bsensor_create()
 ```c
@@ -119,7 +139,7 @@ Configuration parameters for creating binary sensors (see the [mgos_hass_bsensor
 |--|--|
 |pub_cfg|Basic configuration parameters for publishing state. See [ha_base_pub_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_base_pub_cfg_t) type for more details.|
 |bsensor_cfg|Binary sensors configuration parameters. See [ha_bsensor_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_bsensor_cfg_t) type for more details.|
-|sens_cfg|Configuration parameters for generic sensors. See [ha_mqtt_base_sensor_cfg_t](#ha_mqtt_base_sensor_cfg_t) type for more details.|
+|sens_cfg|Configuration parameters for generic MQTT sensors. See [ha_mqtt_base_sensor_cfg_t](#ha_mqtt_base_sensor_cfg_t) type for more details.|
 
 ## <a name="C_Sensors_API"></a>Sensors API
 ### mgos_hass_sensor_create()
