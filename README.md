@@ -183,8 +183,8 @@ bool my_on_state_set(HA_ENTITY_HANDLE handle,
   (void) user_data;
 
   if (state != UNKNOWN) {
-    bool ish = mgos_sys_config_get_board_led1_active_high();
-    mgos_gpio_write(mgos_sys_config_get_board_led1_pin(), (state == ON ? ish : !ish));
+    bool led_ah = mgos_sys_config_get_board_led1_active_high();
+    mgos_gpio_write(mgos_sys_config_get_board_led1_pin(), (state == ON ? led_ah : !led_ah));
   }
   return (state != UNKNOWN);
 }
@@ -303,9 +303,9 @@ if (s) {
   
   s.onStateSet(function(handle, state, userdata) {
     if (state !== Hass.toggleState.UNKNOWN) {
-      let iah = Cfg.get('board.led1.active_high');
-      let gpio_value = (state === Hass.toggleState.ON ? iah : !iah);
-      GPIO.write(Cfg.get('board.led1.pin'), gpio_value);
+      let led_ah = Cfg.get('board.led1.active_high');
+      GPIO.write(Cfg.get('board.led1.pin'),
+        (state === Hass.toggleState.ON ? led_ah : !led_ah));
     }
     return (state !== Hass.toggleState.UNKNOWN);
   }, null);
