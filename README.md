@@ -74,8 +74,8 @@ Creates a binary sensor and returns its HANDLE. Returns `NULL` in case of error.
 
 |Parameter||
 |--|--|
-|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
-|mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_bsensor_cfg_t](#ha_mqtt_bsensor_cfg_t) for more details.|
+|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) type for more details.|
+|mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_bsensor_cfg_t](#ha_mqtt_bsensor_cfg_t) type for more details.|
 
 **Example** - Create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```c
@@ -105,6 +105,22 @@ if (h != NULL) {
   mgos_hass_bsensor_on_state_get(h, my_on_state_get, NULL);
 }
 ```
+### ha_mqtt_bsensor_cfg_t
+```c
+typedef struct ha_mqtt_bsensor_cfg {
+  ha_base_pub_cfg_t pub_cfg;
+  ha_bsensor_cfg_t bsensor_cfg;
+  ha_mqtt_base_sensor_cfg_t sens_cfg;
+} ha_mqtt_bsensor_cfg_t;
+```
+Configuration parameters for creating binary sensors (see the [mgos_hass_bsensor_create](#mgos_hass_bsensor_create) API).
+
+|Field||
+|--|--|
+|pub_cfg|Basic configuration parameters for publishing state. See [ha_base_pub_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_base_pub_cfg_t) type for more details.|
+|bsensor_cfg|Binary sensors configuration parameters. See [ha_bsensor_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_bsensor_cfg_t) type for more details.|
+|sens_cfg|Configuration parameters for generic sensors. See [ha_mqtt_base_sensor_cfg_t](#ha_mqtt_base_sensor_cfg_t) type for more details.|
+
 ## <a name="C_Sensors_API"></a>Sensors API
 ### mgos_hass_sensor_create()
 ```c
@@ -115,8 +131,8 @@ Creates a sensor and returns its HANDLE. Returns `NULL` in case of error.
 
 |Parameter||
 |--|--|
-|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
-|mqtt_cfg|MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](#ha_mqtt_sensor_cfg_t) for more details.|
+|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) type for more details.|
+|mqtt_cfg|MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](#ha_mqtt_sensor_cfg_t) type for more details.|
 
 **Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```c
@@ -157,8 +173,8 @@ Creates a switch and returns its HANDLE. Returns `NULL` in case of error.
 
 |Parameter||
 |--|--|
-|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
-|mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_switch_cfg_t](#ha_mqtt_switch_cfg_t) for more details.|
+|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) type for more details.|
+|mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_switch_cfg_t](#ha_mqtt_switch_cfg_t) type for more details.|
 
 **Example** - Create a switch that publishes its state when the MQTT connection is established, turns on the built-in LED when the `'ON'` command is received, and turns it off automatically after 5 seconds. The system uptime is published as entity's attribute as well. 
 ```c
