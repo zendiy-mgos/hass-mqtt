@@ -50,15 +50,15 @@ The following configuration section is added to the `conf0.json` file in your Mo
 |--|--|--|--|
 |<a name="hass.mqtt.publish.state_topic"></a>hass.mqtt.publish.**state_topic**|string||Default topic for publishing state|
 |<a name="hass.mqtt.publish.attribs_topic"></a>hass.mqtt.publish.**attribs_topic**|string||Default topic for publishing attributes|
-|<a name="hass.mqtt.publish.attribs_pubf"></a>hass.mqtt.publish.**attribs_pubf**|string||The format string for publishig attributes json payload|
+|<a name="hass.mqtt.publish.attribs_pubf"></a>hass.mqtt.publish.**attribs_pubf**|string||The format string for publishig attributes json-payload|
 |<a name="hass.mqtt.publish.retain"></a>hass.mqtt.publish.**retain**|boolean|`true`|If the published message should have the retain flag on or not|
 |<a name="hass.mqtt.publish.qos"></a>hass.mqtt.publish.**qos**|integer|`0`|The maximum QoS level|
 |<a name="hass.mqtt.command.topic"></a>hass.mqtt.command.**topic**|string||Default topic for subscribing to command|
-|<a name="hass.mqtt.command.parsef"></a>hass.mqtt.command.**parsef**|string||The format string for parsing the command json payload|
+|<a name="hass.mqtt.command.parsef"></a>hass.mqtt.command.**parsef**|string||The format string for parsing the command json-payload|
 |<a name="hass.mqtt.availability.enable_birth_msg"></a>hass.mqtt.availability.**enable_birth_msg**|boolean|`true`|Enable/disable the MQTT birth message|
 |<a name="hass.mqtt.availability.state_on"></a>hass.mqtt.availability.**state_on**|string|`'online'`|The value that represents the available state|
 |<a name="hass.mqtt.availability.state_off"></a>hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
-|<a name="hass.mqtt.availability.state_pubf"></a>hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
+|<a name="hass.mqtt.availability.state_pubf"></a>hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json-payload|
 # Session variables
 # C/C++ API reference
 TABLE OF CONTENTS
