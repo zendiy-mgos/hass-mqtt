@@ -27,9 +27,9 @@ The following configuration section is added to the `conf0.json` file in your mo
 "hass": {
   "mqtt": {
     "publish": {
-      "state_topic": "",
-      "attribs_topic": "",
-      "attribs_pubf": "",
+      "state_topic": null,
+      "attribs_topic": null,
+      "attribs_pubf": null,
       "retain": true,
       "qos": 0
     },
@@ -41,7 +41,7 @@ The following configuration section is added to the `conf0.json` file in your mo
       "enable_birth_msg": true,
       "state_on": "online",
       "state_off": "offline",
-      "state_pubf": ""
+      "state_pubf": null
     }
   }
 }
