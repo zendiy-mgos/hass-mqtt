@@ -141,6 +141,74 @@ if (h != NULL) {
   mgos_hass_sensor_on_state_get(h, my_on_state_get, NULL);
 }
 ```
+## Switches API
+### mgos_hass_switch_create()
+```c
+HA_ENTITY_HANDLE mgos_hass_switch_create(ha_entity_cfg_t *entity_cfg,
+                                         ha_mqtt_switch_cfg_t *mqtt_cfg);
+```
+Creates a switch and returns its HANDLE. Returns `NULL` in case of error.
+
+|Parameter||
+|--|--|
+|entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
+|mqtt_cfg| (Optionla) MQTT configuration parameters. See [ha_mqtt_switch_cfg_t](ha_mqtt_switch_cfg_t) for more details.|
+
+**Example** - Create a switch that publishes its state when the MQTT connection, turns on the built-in LED when the `'ON'` command is received, and turns off it after 5 seconds. The system uptime is published as entity's attribute as well. 
+```c
+/* state-get handler for reading switch state */
+bool my_on_state_get(HA_ENTITY_HANDLE handle,
+                     HA_ENTITY_BSTATE entity_state,
+                     void *user_data) {
+  (void) handle;
+  (void) user_data;
+  
+  enum ha_toggle_state switch_state;
+  bool gpio_value = mgos_gpio_read(mgos_sys_config_get_board_led1_pin());
+  if (mgos_sys_config_get_board_led1_active_high()) {
+    switch_state = (gpio_value ? ON : OFF);
+  } else {
+    switch_state = (gpio_value ? OFF : ON);
+  }
+  
+  return mgos_hass_entity_bstate_setf(entity_state, switch_state,
+    "{ sys_uptime:%f }", mgos_uptime());
+}
+
+/* state-set handler for changing switch state */
+bool my_on_state_set(HA_ENTITY_HANDLE handle, 
+                     enum ha_toggle_state state,
+                     void *user_data) {
+  (void) handle;
+  (void) user_data;
+
+  bool gpio_value;
+  switch(state) {
+    case ON:
+      gpio_value = mgos_sys_config_get_board_led1_active_high();
+      break;
+    case OFF:
+      gpio_value = !mgos_sys_config_get_board_led1_active_high();
+      break;
+    default:
+      return false;
+  };
+  mgos_gpio_write(mgos_sys_config_get_board_led1_pin(), gpio_value);
+  return true;
+}
+
+/* Set configuration parameters */
+ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_switch");
+ha_mqtt_switch_cfg_t mqtt_cfg = MK_HA_MQTT_SWITCH_CFG();
+mqtt_cfg.switch_cfg.inching_timeout = 5000; // milliseconds
+
+/* Create the switch */ 
+HA_ENTITY_HANDLE h = mgos_hass_switch_create(&entity_cfg, &mqtt_cfg);
+if (h != NULL) {
+  mgos_hass_switch_on_state_set(h, my_on_state_set, NULL);
+  mgos_hass_switch_on_state_get(h, my_on_state_get, NULL);
+}
+```
 # JS API
 ## Binary sensors API
 ### Hass.BSENSOR.create()
