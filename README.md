@@ -1,4 +1,4 @@
-Home Assistant MQTT Devices Mongoose OS library
+Home Assistant MQTT Devices Mongoose-OS library
 ===============================================
 # Overview
 The [Mongoose-OS](https://mongoose-os.com/) library for making [Home Assistant](https://www.home-assistant.io/) compatible MQTT devices. Following Home Assistant MQTT entities are currently supported:
@@ -22,7 +22,7 @@ If you are developing a JavaScript firmware load into your `init.js` the `api_ha
 load('api_hass_mqtt.js');
 ```
 # Configuration
-The following configuration section is added to the `conf0.json` file in your mongoose-os project.
+The following configuration section is added to the `conf0.json` file in your Mongoose-OS project.
 ```json
 "hass": {
   "mqtt": {
