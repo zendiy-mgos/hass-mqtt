@@ -116,7 +116,7 @@ Creates a sensor and returns its HANDLE. Returns `NULL` in case of error.
 |Parameter||
 |--|--|
 |entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
-|mqtt_cfg| MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](#ha_mqtt_sensor_cfg_t) for more details.|
+|mqtt_cfg|MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](#ha_mqtt_sensor_cfg_t) for more details.|
 
 **Example** - Create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. The system uptime is published as entity's attribute as well.
 ```c
@@ -158,7 +158,7 @@ Creates a switch and returns its HANDLE. Returns `NULL` in case of error.
 |Parameter||
 |--|--|
 |entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
-|mqtt_cfg| (Optionla) MQTT configuration parameters. See [ha_mqtt_switch_cfg_t](#ha_mqtt_switch_cfg_t) for more details.|
+|mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_switch_cfg_t](#ha_mqtt_switch_cfg_t) for more details.|
 
 **Example** - Create a switch that publishes its state when the MQTT connection is established, turns on the built-in LED when the `'ON'` command is received, and turns it off automatically after 5 seconds. The system uptime is published as entity's attribute as well. 
 ```c
@@ -292,7 +292,7 @@ Creates a switch object. Returns `NULL` in case of error.
 |Parameter||
 |--|--|
 |entity_cfg|Configuration parameters.|
-|mqtt_cfg|MQTT configuration parameters.|
+|mqtt_cfg|(Optional) MQTT configuration parameters.|
 
 **Example** - Create a switch that publishes its state when the MQTT connection is established, turns on the built-in LED when the `'ON'` command is received, and turns it off automatically after 5 seconds. The system uptime is published as entity's attribute as well. 
 ```js
