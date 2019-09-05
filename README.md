@@ -75,17 +75,43 @@ Creates a binary sensor and returns its HANDLE. Returns `NULL` in case of error.
 
 **Example 1** - create a binary sensor that publishes its state according the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```c
+/* state-get handler for reading binary sensor state */
+bool my_on_state_get(HA_ENTITY_HANDLE handle,
+                     HA_ENTITY_BSTATE entity_state,
+                     void *user_data) {
+  (void) handle;
+  (void) user_data;
+  enum ha_toggle_state state = UNKNOWN; // NOTE: replace UNKNOWN with your sensor state
+  return mgos_hass_entity_bstate_set(entity_state, state, NULL);
+}
+
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&entity_cfg, NULL);
+if (h != NULL) {
+  mgos_hass_bsensor_on_state_get(h, my_on_state_get, NULL);
+}
 ```
 **Example 2** - create a binary sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
 ```c
+/* state-get handler for reading binary sensor state */
+bool my_on_state_get(HA_ENTITY_HANDLE handle,
+                     HA_ENTITY_BSTATE entity_state,
+                     void *user_data) {
+  (void) handle;
+  (void) user_data;
+  enum ha_toggle_state state = UNKNOWN; // NOTE: replace UNKNOWN with your sensor state
+  return mgos_hass_entity_bstate_set(entity_state, state, NULL);
+}
+
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 ha_mqtt_bsensor_cfg_t mqtt_cfg = MK_HA_MQTT_BSENSOR_CFG();
 mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
 HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&entity_cfg, &mqtt_cfg);
+if (h != NULL) {
+  mgos_hass_bsensor_on_state_get(h, my_on_state_get, NULL);
+}
 ```
 ## Sensors API
 ### mgos_hass_sensor_create()
@@ -98,21 +124,52 @@ Creates a sensor and returns its HANDLE. Returns `NULL` in case of error.
 |Parameter||
 |--|--|
 |entity_cfg|Entity configuration parameters. See [ha_entity_cfg_t](https://github.com/zendiy-mgos/hass/blob/master/README.md#ha_entity_cfg_t) for more details.|
-|mqtt_cfg|(Optional) MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](ha_mqtt_sensor_cfg_t) for more details.|
+|mqtt_cfg| MQTT configuration parameters. See [ha_mqtt_sensor_cfg_t](ha_mqtt_sensor_cfg_t) for more details.|
 
 **Example 1** - create a sensor that publishes its state according the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```c
-/* Create and initialze Home Assistant entity sensor.my_first_sensor */
-ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
-HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, NULL);
-```
-**Example 2** - create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
-```c
+/* state-get handler for reading sensor value */
+bool my_on_state_get(HA_ENTITY_HANDLE handle,
+                     HA_ENTITY_XSTATE entity_state,
+                     void *user_data) {
+  (void) handle;
+  (void) user_data;
+  double sensor_value = 0.0; // NOTE: replace 0.0 with your sensor value
+  return mgos_hass_entity_fstate_set(entity_state, sensor_value, NULL);
+}
+
 /* Create and initialze Home Assistant entity sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
 ha_mqtt_sensor_cfg_t mqtt_cfg = MK_HA_MQTT_SENSOR_CFG();
-mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
+mqtt_cfg.sens_cfg.state_pubf = "%.1f";
+
 HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, &mqtt_cfg);
+if (h != NULL) {
+  mgos_hass_sensor_on_state_get(h, my_on_state_get, NULL);
+}
+```
+**Example 2** - create a sensor that publishes its state when the MQTT connection is established and every 2 seconds, ignoring the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. 
+```c
+/* state-get handler for reading sensor value */
+bool my_on_state_get(HA_ENTITY_HANDLE handle,
+                     HA_ENTITY_XSTATE entity_state,
+                     void *user_data) {
+  (void) handle;
+  (void) user_data;
+  double sensor_value = 0.0; // NOTE: replace 0.0 with your sensor value
+  return mgos_hass_entity_fstate_set(entity_state, sensor_value, NULL);
+}
+
+/* Create and initialze Home Assistant entity sensor.my_first_sensor */
+ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
+ha_mqtt_sensor_cfg_t mqtt_cfg = MK_HA_MQTT_SENSOR_CFG();
+mqtt_cfg.sens_cfg.state_pubf = "%.1f";
+mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
+
+HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, &mqtt_cfg);
+if (h != NULL) {
+  mgos_hass_sensor_on_state_get(h, my_on_state_get, NULL);
+}
 ```
 # JS API
 ## Binary sensors API
@@ -150,7 +207,7 @@ Creates a sensor object. Returns `NULL` in case of error.
 |Parameter||
 |--|--|
 |entity_cfg|Configuration parameters.|
-|mqtt_cfg|(Optional) MQTT configuration parameters.|
+|mqtt_cfg|MQTT configuration parameters.|
 
 **Example 1** - create a sensor that publishes its state according the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```js
