@@ -68,7 +68,7 @@ HA_ENTITY_HANDLE mgos_hass_bsensor_create(ha_entity_cfg_t *entity_cfg,
 ```
 **Creates a binary sensor handle providing entity configuration and, optionally, the MQTT configuration. Returns `NULL` in case of error.**
 
-Example 1 - create a binary sensor that publishes its state according the `hass.publish.interval` config defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
+Example 1 - create a binary sensor that publishes its state according the `hass.publish.interval` [config](https://github.com/zendiy-mgos/hass/blob/master/README.md#hass.publish.interval) defined in the `mos.yml` file. If it is set to `0`(zero), the sensor publishes its state only when the MQTT connection is established.
 ```c
 /* Create and initialze Home Assistant entity binary_sensor.my_first_sensor */
 ha_entity_cfg_t entity_cfg = HA_ENTITY_CFG("my_first_sensor");
