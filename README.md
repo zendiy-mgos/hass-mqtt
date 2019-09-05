@@ -97,6 +97,7 @@ mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
 /* Create the binary sensor */
 HA_ENTITY_HANDLE h = mgos_hass_bsensor_create(&entity_cfg, &mqtt_cfg);
 if (h != NULL) {
+  /* Register the state-get handler */
   mgos_hass_bsensor_on_state_get(h, my_on_state_get, NULL);
 }
 ```
@@ -138,6 +139,7 @@ mqtt_cfg.pub_cfg.timer_timeout = 2000; //milliseconds
 /* Create the sensor */
 HA_ENTITY_HANDLE h = mgos_hass_sensor_create(&entity_cfg, &mqtt_cfg);
 if (h != NULL) {
+  /* Register the state-get handler */
   mgos_hass_sensor_on_state_get(h, my_on_state_get, NULL);
 }
 ```
@@ -184,7 +186,8 @@ bool my_on_state_set(HA_ENTITY_HANDLE handle,
 
   if (state != UNKNOWN) {
     bool led_ah = mgos_sys_config_get_board_led1_active_high();
-    mgos_gpio_write(mgos_sys_config_get_board_led1_pin(), (state == ON ? led_ah : !led_ah));
+    mgos_gpio_write(mgos_sys_config_get_board_led1_pin(),
+      (state == ON ? led_ah : !led_ah));
   }
   return (state != UNKNOWN);
 }
@@ -196,9 +199,11 @@ mqtt_cfg.switch_cfg.inching_timeout = 5000; // (milliseconds) turn off after 5 s
 
 /* Create the switch */ 
 HA_ENTITY_HANDLE h = mgos_hass_switch_create(&entity_cfg, &mqtt_cfg);
-if (h != NULL) {
-  mgos_hass_switch_on_state_set(h, my_on_state_set, NULL);
+if (h != NULL) {  
+  /* Register the state-get handler */
   mgos_hass_switch_on_state_get(h, my_on_state_get, NULL);
+  /* Register the state-set handler */
+  mgos_hass_switch_on_state_set(h, my_on_state_set, NULL);
 }
 ```
 # JS API
@@ -223,6 +228,7 @@ let mqtt_cfg = { pub_cfg: { timer_timeout: 2000 } }; //milliseconds
 /* Create the binary sensor */
 let s = Hass.BSENSOR.create(entity_cfg, mqtt_cfg);
 if (s) {
+  /* Register the state-get handler */
   s.onStateGet(function(handle, entity_state, userdata) {
     /* Read binary sensor state here and set <sensor_state> variable below
        with the proper value instead of Hass.toggleState.UNKNOWN */
@@ -257,6 +263,7 @@ let mqtt_cfg = {
 /* Create the sensor */
 let s = Hass.SENSOR.create(entity_cfg, mqtt_cfg);
 if (s) {
+  /* Register the state-get handler */
   s.onStateGet(function(handle, entity_state, userdata) {
     /* Read sensor here and set <sensor_value> variable below
        with the proper value instead of 0.0 */
@@ -283,11 +290,14 @@ Creates a switch object. Returns `NULL` in case of error.
 ```js
 /* Set configuration parameters */
 let entity_cfg = { object_id: "my_first_switch" };
-let mqtt_cfg = { switch_cfg: { inching_timeout: 5000 } };
+let mqtt_cfg = {
+  switch_cfg: { inching_timeout: 5000 } // (milliseconds) turn off after 5 secs
+};
 
 /* Create the switch */
 let s = Hass.SWITCH.create(entity_cfg, mqtt_cfg);
 if (s) {
+  /* Register the state-get handler */
   s.onStateGet(function(handle, entity_state, userdata) {
     let switch_state;
     let gpio_value = GPIO.read(Cfg.get('board.led1.pin'));
@@ -300,7 +310,7 @@ if (s) {
     return Hass.entityToggleStateSet(entity_state, switch_state,
       JSON.stringify({ sys_uptime: Sys.uptime() }));
   }, null);
-  
+  /* Register the state-set handler */
   s.onStateSet(function(handle, state, userdata) {
     if (state !== Hass.toggleState.UNKNOWN) {
       let led_ah = Cfg.get('board.led1.active_high');
