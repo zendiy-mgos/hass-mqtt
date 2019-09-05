@@ -49,16 +49,16 @@ The following configuration section is added to the `conf0.json` file in your Mo
 |Property|Type|Default|Description|
 |--|--|--|--|
 |<a name="hass.mqtt.publish.state_topic"></a>hass.mqtt.publish.**state_topic**|string||Default topic for publishing state|
-|hass.mqtt.publish.**attribs_topic**|string||Default topic for publishing attributes|
-|hass.mqtt.publish.**attribs_pubf**|string||The format string for publishig attributes json payload|
-|hass.mqtt.publish.**retain**|boolean|`true`|If the published message should have the retain flag on or not|
-|hass.mqtt.publish.**qos**|integer|`0`|The maximum QoS level|
-|hass.mqtt.command.**topic**|string||Default topic for subscribing to command|
-|hass.mqtt.command.**parsef**|string||The format string for parsing the command json payload|
-|hass.mqtt.availability.**enable_birth_msg**|boolean|`true`|Enable/disable the MQTT birth message|
-|hass.mqtt.availability.**state_on**|string|`'online'`|The value that represents the available state|
-|hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
-|hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
+|<a name="hass.mqtt.publish.attribs_topic"></a>hass.mqtt.publish.**attribs_topic**|string||Default topic for publishing attributes|
+|<a name="hass.mqtt.publish.attribs_pubf"></a>hass.mqtt.publish.**attribs_pubf**|string||The format string for publishig attributes json payload|
+|<a name="hass.mqtt.publish.retain"></a>hass.mqtt.publish.**retain**|boolean|`true`|If the published message should have the retain flag on or not|
+|<a name="hass.mqtt.publish.qos"></a>hass.mqtt.publish.**qos**|integer|`0`|The maximum QoS level|
+|<a name="hass.mqtt.command.topic"></a>hass.mqtt.command.**topic**|string||Default topic for subscribing to command|
+|<a name="hass.mqtt.command.parsef"></a>hass.mqtt.command.**parsef**|string||The format string for parsing the command json payload|
+|<a name="hass.mqtt.availability.enable_birth_msg"></a>hass.mqtt.availability.**enable_birth_msg**|boolean|`true`|Enable/disable the MQTT birth message|
+|<a name="hass.mqtt.availability.state_on"></a>hass.mqtt.availability.**state_on**|string|`'online'`|The value that represents the available state|
+|<a name="hass.mqtt.availability.state_off"></a>hass.mqtt.availability.**state_off**|string|`'offline'`|The value that represents the unavailable state|
+|<a name="hass.mqtt.availability.state_pubf"></a>hass.mqtt.availability.**state_pubf**|string||The format string for publishig the availability json payload|
 # C/C++ API reference
 TABLE OF CONTENTS
  - [Common data types and API](#C_Common_data_types_and_API)
@@ -79,10 +79,13 @@ Configuration parameters for generic MQTT sensors.
 
 |Field||
 |--|--|
-|state_topic|MQTT Topic for publishing state. If `NULL`, the `hass.mqtt.publish.state_topic` [config](#hass.mqtt.publish.state_topic) is used.|
-|state_pubf||
-|attribs_topic||
-|attribs_pubf||
+|state_topic|MQTT topic for publishing state. If `NULL`, the [hass.mqtt.publish.state_topic](#hass.mqtt.publish.state_topic) config is used.
+Following session variables can be used: `${object_id}`, `${device_id}`|
+|state_pubf|Format string for publishing state. It uses `json_vasprintf()`-like [format](https://github.com/cesanta/frozen/blob/master/README.md#json_asprintf-json_vasprintf).
+Following session variables can be used: `${state.attribs}`|
+|attribs_topic|MQTT topic for publishing attributes. If `NULL`, the [hass.mqtt.publish.attribs_topic](#hass.mqtt.publish.attribs_topic) config is used.
+Following session variables can be used: `${object_id}`, `${device_id}`|
+|attribs_pubf|Format string for publishing attributes json-payload. It uses `json_vasprintf()`-like [format](https://github.com/cesanta/frozen/blob/master/README.md#json_asprintf-json_vasprintf).|
 
 ## <a name="C_Binary_sensors_API"></a>Binary sensors API
 ### mgos_hass_bsensor_create()
