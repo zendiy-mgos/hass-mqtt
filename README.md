@@ -48,7 +48,7 @@ The following configuration section is added to the `conf0.json` file in your Mo
 ```
 |Property|Type|Default|Description|
 |--|--|--|--|
-|hass.mqtt.publish.**state_topic**|string||Default topic for publishing state|
+|<a name="hass.mqtt.publish.state_topic"></a>hass.mqtt.publish.**state_topic**|string||Default topic for publishing state|
 |hass.mqtt.publish.**attribs_topic**|string||Default topic for publishing attributes|
 |hass.mqtt.publish.**attribs_pubf**|string||The format string for publishig attributes json payload|
 |hass.mqtt.publish.**retain**|boolean|`true`|If the published message should have the retain flag on or not|
@@ -79,7 +79,7 @@ Configuration parameters for generic MQTT sensors.
 
 |Field||
 |--|--|
-|state_topic||
+|state_topic|MQTT Topic for publishing state. If `NULL`, the `hass.mqtt.publish.state_topic` [config](#hass.mqtt.publish.state_topic) is used.|
 |state_pubf||
 |attribs_topic||
 |attribs_pubf||
